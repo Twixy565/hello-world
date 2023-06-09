@@ -7,4 +7,5 @@
 "lastName":  "Johnson",
 "age":  "44"
 "currentCareer": "Clinical Laboratory Scientist"
+"hobbies": "playing with my kids, reading, gardening, working out"
 }
