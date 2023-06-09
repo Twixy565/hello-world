@@ -6,4 +6,5 @@
 "firstName":  "Franchesca",
 "lastName":  "Johnson",
 "age":  "44"
+"currentCareer": "Clinical Laboratory Scientist"
 }
