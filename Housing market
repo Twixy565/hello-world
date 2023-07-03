@@ -1,0 +1,83 @@
+
+We interact with a few datasets in this course, one you are already familiar with, the 2014 American Community Survey and the second is a Housing dataset, that provides real estate transactions recorded from 1964 to 2016.  For this exercise, you need to start practicing some data transformation steps – which will carry into next week, as you learn some additional methods.  For this week, using either dataset (or one of your own – although I will let you know ahead of time that the Housing dataset is used for a later assignment, so not a bad idea for you to get more comfortable with now!), perform the following data transformations:
+Use the apply function on a variable in your dataset
+library(readxl)
+Housing_dataset <- read_excel("data/week-7-housing.xlsx")
+
+apply(Housing_dataset, 2, length)
+               Sale Date               Sale Price              sale_reason          sale_instrument             sale_warning 
+                   12865                    12865                    12865                    12865                    12865 
+                sitetype                addr_full                     zip5                  ctyname               postalctyn 
+                   12865                    12865                    12865                    12865                    12865 
+                     lon                      lat           building_grade square_feet_total_living                 bedrooms 
+                   12865                    12865                    12865                    12865                    12865 
+         bath_full_count          bath_half_count          bath_3qtr_count               year_built           year_renovated 
+                   12865                    12865                    12865                    12865                    12865 
+          current_zoning                sq_ft_lot                prop_type              present_use 
+                   12865                    12865                    12865                    12865
+
+
+Use the aggregate function on a variable in your dataset
+ aggregate(zip5 ~ sale_reason, Housing_dataset, mean)
+   sale_reason     zip5
+1            0 98052.00
+2            1 98052.54
+3            2 98053.00
+4            3 98053.00
+5            4 98052.55
+6            6 98052.00
+7            7 98052.67
+8            8 98052.66
+9           10 98052.00
+10          11 98052.00
+11          12 98052.43
+12          13 98052.00
+13          14 98052.39
+14          16 98052.33
+15          17 98052.00
+16          18 98052.60
+17          19 98052.33
+
+
+Use the plyr function on a variable in your dataset – more specifically, I want to see you split some data, perform a modification to the data, and then bring it back together
+> Housing_dataset %>% select(-(sale_reason:sitetype))
+
+# A tibble: 12,865 × 20
+   `Sale Date`         `Sale Price` addr_full           zip5 ctyname postalctyn   lon   lat building_grade square_feet_total_liv…¹ bedrooms
+   <dttm>                     <dbl> <chr>              <dbl> <chr>   <chr>      <dbl> <dbl>          <dbl>                   <dbl>    <dbl>
+ 1 2006-01-03 00:00:00       698000 17021 NE 113TH CT  98052 REDMOND REDMOND    -122.  47.7              9                    2810        4
+ 2 2006-01-03 00:00:00       649990 11927 178TH PL NE  98052 REDMOND REDMOND    -122.  47.7              9                    2880        4
+ 3 2006-01-03 00:00:00       572500 13315 174TH AVE NE 98052 NA      REDMOND    -122.  47.7              8                    2770        4
+ 4 2006-01-03 00:00:00       420000 3303 178TH AVE NE  98052 REDMOND REDMOND    -122.  47.6              8                    1620        3
+ 5 2006-01-03 00:00:00       369900 16126 NE 108TH CT  98052 REDMOND REDMOND    -122.  47.7              7                    1440        3
+ 6 2006-01-03 00:00:00       184667 8101 229TH DR NE   98053 NA      REDMOND    -122.  47.7              7                    4160        4
+ 7 2006-01-04 00:00:00      1050000 21634 NE 87TH PL   98053 NA      REDMOND    -122.  47.7             10                    3960        5
+ 8 2006-01-04 00:00:00       875000 21404 NE 67TH ST   98053 NA      REDMOND    -122.  47.7             10                    3720        4
+ 9 2006-01-04 00:00:00       660000 7525 238TH AVE NE  98053 NA      REDMOND    -122.  47.7              9                    4160        4
+10 2006-01-04 00:00:00       650000 17703 NE 26TH ST   98052 REDMOND REDMOND    -122.  47.6              8                    2760        4
+Sorted data by Sale Price:
+
+`Sale Date`         `Sale Price` sale_reason sale_instrument sale_warning sitetype addr_full         zip5 ctyname postalctyn   lon   lat
+   <dttm>                     <dbl>       <dbl>           <dbl> <chr>        <chr>    <chr>            <dbl> <chr>   <chr>      <dbl> <dbl>
+ 1 2010-03-02 00:00:00      4400000           1               3 35 45        R1       12025 154TH PL … 98052 NA      REDMOND    -122.  47.7
+ 2 2010-03-02 00:00:00      4400000           1               3 35 45        R1       12053 154TH PL … 98052 NA      REDMOND    -122.  47.7
+ 3 2011-11-17 00:00:00      4380542           1              22 11 45        R1       17137 NE 120TH … 98052 REDMOND REDMOND    -122.  47.7
+ 4 2011-11-17 00:00:00      4380542           1              22 11 45        R1       11818 171ST PL … 98052 REDMOND REDMOND    -122.  47.7
+ 5 2011-11-17 00:00:00      4380542           1              22 11 45        R1       17011 NE 118TH … 98052 REDMOND REDMOND    -122.  47.7
+ 6 2011-11-17 00:00:00      4380542           1              22 11 45        R1       16943 NE 118TH … 98052 REDMOND REDMOND    -122.  47.7
+ 7 2011-11-17 00:00:00      4380542           1              22 11 45        R1       16944 NE 118TH … 98052 REDMOND REDMOND    -122.  47.7
+ 8 2011-11-17 00:00:00      4380542           1              22 11 45        R1       16909 NE 120TH … 98052 REDMOND REDMOND    -122.  47.7
+ 9 2011-11-17 00:00:00      4380542           1              22 11 45        R1       17128 NE 120TH … 98052 REDMOND REDMOND    -122.  47.7
+10 2011-11-17 00:00:00      4380542           1              22 11 45        R1       17136 NE 120TH … 98052 REDMOND REDMOND    -122.  47.7
+
+
+
+Check distributions of the data
+Housing_dataset + stat_function(fun = dnorm, args = list)
+
+
+> 
+Identify if there are any outliers
+Yes, there appears to be a higher sale price in a particular zip code, that stands out from the rest. 
+
+Create at least 2 new variables
