@@ -1,0 +1,160 @@
+> select(acs_14_1yr_s0201, Geography, HSDegree, BachDegree)
+# A tibble: 136 × 3
+   Geography                       HSDegree BachDegree
+   <chr>                              <dbl>      <dbl>
+ 1 Jefferson County, Alabama           89.1       30.5
+ 2 Maricopa County, Arizona            86.8       30.2
+ 3 Pima County, Arizona                88         30.8
+ 4 Alameda County, California          86.9       42.8
+ 5 Contra Costa County, California     88.8       39.7
+ 6 Fresno County, California           73.6       19.7
+ 7 Kern County, California             74.5       15.4
+ 8 Los Angeles County, California      77.5       30.3
+ 9 Orange County, California           84.6       38  
+10 Riverside County, California        80.6       20.7
+# ℹ 126 more rows
+# ℹ Use `print(n = ...)` to see more rows
+
+> acs_14_1yr_s0201 %>% group_by(HSDegree)
+# A tibble: 136 × 8
+# Groups:   HSDegree [86]
+   Id               Id2 Geography                       PopGroupID `POPGROUP.display-label` RacesReported HSDegree BachDegree
+   <chr>          <dbl> <chr>                                <dbl> <chr>                            <dbl>    <dbl>      <dbl>
+ 1 0500000US01073  1073 Jefferson County, Alabama                1 Total population                660793     89.1       30.5
+ 2 0500000US04013  4013 Maricopa County, Arizona                 1 Total population               4087191     86.8       30.2
+ 3 0500000US04019  4019 Pima County, Arizona                     1 Total population               1004516     88         30.8
+ 4 0500000US06001  6001 Alameda County, California               1 Total population               1610921     86.9       42.8
+ 5 0500000US06013  6013 Contra Costa County, California          1 Total population               1111339     88.8       39.7
+ 6 0500000US06019  6019 Fresno County, California                1 Total population                965974     73.6       19.7
+ 7 0500000US06029  6029 Kern County, California                  1 Total population                874589     74.5       15.4
+ 8 0500000US06037  6037 Los Angeles County, California           1 Total population              10116705     77.5       30.3
+ 9 0500000US06059  6059 Orange County, California                1 Total population               3145515     84.6       38  
+10 0500000US06065  6065 Riverside County, California             1 Total population               2329271     80.6       20.7
+# ℹ 126 more rows
+# ℹ Use `print(n = ...)` to see more rows
+
+> acs_14_1yr_s0201 %>% filter(BachDegree >= 30)
+# A tibble: 98 × 8
+   Id               Id2 Geography                        PopGroupID `POPGROUP.display-label` RacesReported HSDegree BachDegree
+   <chr>          <dbl> <chr>                                 <dbl> <chr>                            <dbl>    <dbl>      <dbl>
+ 1 0500000US01073  1073 Jefferson County, Alabama                 1 Total population                660793     89.1       30.5
+ 2 0500000US04013  4013 Maricopa County, Arizona                  1 Total population               4087191     86.8       30.2
+ 3 0500000US04019  4019 Pima County, Arizona                      1 Total population               1004516     88         30.8
+ 4 0500000US06001  6001 Alameda County, California                1 Total population               1610921     86.9       42.8
+ 5 0500000US06013  6013 Contra Costa County, California           1 Total population               1111339     88.8       39.7
+ 6 0500000US06037  6037 Los Angeles County, California            1 Total population              10116705     77.5       30.3
+ 7 0500000US06059  6059 Orange County, California                 1 Total population               3145515     84.6       38  
+ 8 0500000US06073  6073 San Diego County, California              1 Total population               3263431     86.6       37.1
+ 9 0500000US06075  6075 San Francisco County, California          1 Total population                852469     88.1       54.2
+10 0500000US06081  6081 San Mateo County, California              1 Total population                758581     88.1       47.5
+# ℹ 88 more rows
+# ℹ Use `print(n = ...)` to see more rows
+
+
+ acs_14_1yr_s0201 %>% mutate(RacesReported/HSDegree)
+# A tibble: 136 × 9
+   Id               Id2 Geography                PopGroupID POPGROUP.display-lab…¹ RacesReported HSDegree BachDegree RacesReported/HSDegr…²
+   <chr>          <dbl> <chr>                         <dbl> <chr>                          <dbl>    <dbl>      <dbl>                  <dbl>
+ 1 0500000US01073  1073 Jefferson County, Alaba…          1 Total population              660793     89.1       30.5                  7416.
+ 2 0500000US04013  4013 Maricopa County, Arizona          1 Total population             4087191     86.8       30.2                 47087.
+ 3 0500000US04019  4019 Pima County, Arizona              1 Total population             1004516     88         30.8                 11415.
+ 4 0500000US06001  6001 Alameda County, Califor…          1 Total population             1610921     86.9       42.8                 18538.
+ 5 0500000US06013  6013 Contra Costa County, Ca…          1 Total population             1111339     88.8       39.7                 12515.
+ 6 0500000US06019  6019 Fresno County, Californ…          1 Total population              965974     73.6       19.7                 13125.
+ 7 0500000US06029  6029 Kern County, California           1 Total population              874589     74.5       15.4                 11739.
+ 8 0500000US06037  6037 Los Angeles County, Cal…          1 Total population            10116705     77.5       30.3                130538.
+ 9 0500000US06059  6059 Orange County, Californ…          1 Total population             3145515     84.6       38                   37181.
+10 0500000US06065  6065 Riverside County, Calif…          1 Total population             2329271     80.6       20.7                 28899.
+# ℹ 126 more rows
+# ℹ abbreviated names: ¹​`POPGROUP.display-label`, ²​`RacesReported/HSDegree`
+# ℹ Use `print(n = ...)` to see more rows
+
+
+ acs_14_1yr_s0201 %>% summarize(AveRacesReported=median(RacesReported), HSDegreeAve=median(HSDegree), BachDegreeAve=median(BachDegree))
+# A tibble: 1 × 3
+  AveRacesReported HSDegreeAve BachDegreeAve
+             <dbl>       <dbl>         <dbl>
+1          832708.        88.7          34.1
+
+> acs_14_1yr_s0201 %>% arrange(Geography, BachDegree, HSDegree)
+# A tibble: 136 × 8
+   Id               Id2 Geography                      PopGroupID `POPGROUP.display-label` RacesReported HSDegree BachDegree
+   <chr>          <dbl> <chr>                               <dbl> <chr>                            <dbl>    <dbl>      <dbl>
+ 1 0500000US06001  6001 Alameda County, California              1 Total population               1610921     86.9       42.8
+ 2 0500000US42003 42003 Allegheny County, Pennsylvania          1 Total population               1231255     93.9       37.7
+ 3 0500000US24003 24003 Anne Arundel County, Maryland           1 Total population                560133     91.9       38.8
+ 4 0500000US08005  8005 Arapahoe County, Colorado               1 Total population                618821     91.9       40.9
+ 5 0500000US24005 24005 Baltimore County, Maryland              1 Total population                826925     90.4       37.2
+ 6 0500000US24510 24510 Baltimore city, Maryland                1 Total population                622793     84.4       30  
+ 7 0500000US34003 34003 Bergen County, New Jersey               1 Total population                933572     91.5       46.2
+ 8 0500000US35001 35001 Bernalillo County, New Mexico           1 Total population                675551     88         32.7
+ 9 0500000US48029 48029 Bexar County, Texas                     1 Total population               1855866     83         26.3
+10 0500000US12009 12009 Brevard County, Florida                 1 Total population                556885     91.6       27.2
+# ℹ 126 more rows
+# ℹ Use `print(n = ...)` to see more rows
+
+> acs_14_1yr_s0201 %>% map_chr(class)
+                    Id                    Id2              Geography             PopGroupID POPGROUP.display-label          RacesReported 
+           "character"              "numeric"            "character"              "numeric"            "character"              "numeric" 
+              HSDegree             BachDegree 
+             "numeric"              "numeric" 
+> acs_14_1yr_s0201 %>% map_int(NROW)
+                    Id                    Id2              Geography             PopGroupID POPGROUP.display-label          RacesReported 
+                   136                    136                    136                    136                    136                    136 
+              HSDegree             BachDegree 
+                   136                    136 
+                   
+     Idgroup Other                   
+[1,] "Id"    "PopGroupID"            
+[2,] "Id2"   "POPGROUP.display-label"
+> Other2 <- rbind(Idgroup, Other)
+> Other2
+        [,1]         [,2]                    
+Idgroup "Id"         "Id2"                   
+Other   "PopGroupID" "POPGROUP.display-label"
+
+> head(acs_14_1yr_s0201)
+# A tibble: 6 × 8
+  Id               Id2 Geography                       PopGroupID `POPGROUP.display-label` RacesReported HSDegree BachDegree
+  <chr>          <dbl> <chr>                                <dbl> <chr>                            <dbl>    <dbl>      <dbl>
+1 0500000US01073  1073 Jefferson County, Alabama                1 Total population                660793     89.1       30.5
+2 0500000US04013  4013 Maricopa County, Arizona                 1 Total population               4087191     86.8       30.2
+3 0500000US04019  4019 Pima County, Arizona                     1 Total population               1004516     88         30.8
+4 0500000US06001  6001 Alameda County, California               1 Total population               1610921     86.9       42.8
+5 0500000US06013  6013 Contra Costa County, California          1 Total population               1111339     88.8       39.7
+6 0500000US06019  6019 Fresno County, California                1 Total population                965974     73.6       19.7
+> city_state <- str_split(string = acs_14_1yr_s0201$Geography, pattern = ",")
+> head(city_state)
+[[1]]
+[1] "Jefferson County" " Alabama"        
+
+[[2]]
+[1] "Maricopa County" " Arizona"       
+
+[[3]]
+[1] "Pima County" " Arizona"   
+
+[[4]]
+[1] "Alameda County" " California"   
+
+[[5]]
+[1] "Contra Costa County" " California"        
+
+[[6]]
+[1] "Fresno County" " California"  
+
+> citystateMatrix <- data.frame(Reduce(rbind, city_state))
+> head(citystateMatrix)
+                      X1          X2
+init    Jefferson County     Alabama
+X        Maricopa County     Arizona
+X.1          Pima County     Arizona
+X.2       Alameda County  California
+X.3  Contra Costa County  California
+X.4        Fresno County  California
+
+
+                   
+
+
+
